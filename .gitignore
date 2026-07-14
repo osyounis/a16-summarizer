@@ -1,0 +1,44 @@
+# --- Weights & models (host on HF Hub, never in git) ---
+*.safetensors
+*.gguf
+*.bin
+*.pt
+*.ckpt
+*.mlpackage/
+*.mlmodelc/
+out/
+checkpoints/
+mlx_model/
+
+# --- Data (download via script; don't redistribute) ---
+data/
+*.jsonl
+
+# --- Secrets ---
+.env
+*.token
+hf_token*
+wandb/
+.wandb/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# --- Apple / Xcode ---
+xcuserdata/
+*.xcuserstate
+DerivedData/
+*.mobileprovision
+*.p12
+*.certSigningRequest
+build/
+
+# --- OS ---
+.DS_Store
+
+# --- Private planning docs (readable locally / by Claude Code, never committed) ---
+BUILD_GUIDE.md

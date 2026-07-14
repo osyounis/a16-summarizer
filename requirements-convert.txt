@@ -1,0 +1,4 @@
+# M2 Mac only (MLX is Apple-silicon). Confirm current flags with `mlx_lm.convert --help`.
+mlx
+mlx-lm
+huggingface_hub

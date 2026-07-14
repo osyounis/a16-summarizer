@@ -1,0 +1,12 @@
+# RTX 3080 box (CUDA). Pin versions when you build — confirm current with Claude Code.
+torch
+transformers
+datasets
+peft
+trl
+bitsandbytes
+accelerate
+evaluate
+rouge_score
+# optional experiment tracking:
+# wandb

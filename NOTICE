@@ -1,0 +1,17 @@
+This project builds on the following third-party works:
+
+Qwen2.5-1.5B-Instruct
+  Copyright Alibaba Cloud.
+  Licensed under the Apache License, Version 2.0.
+  https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct
+  Any model artifacts in this project derived from Qwen2.5 are distributed under
+  Apache 2.0, and the HF model repo is tagged with base_model: Qwen/Qwen2.5-1.5B-Instruct.
+
+DialogSum
+  Licensed under the MIT License.
+  Chen et al., "DialogSum: A Real-Life Scenario Dialogue Summarization Dataset."
+  The dataset is downloaded at build time and is not redistributed in this repository.
+
+MLX / mlx-swift-examples
+  Copyright Apple Inc. Licensed under the MIT License.
+  https://github.com/ml-explore/mlx-swift-examples

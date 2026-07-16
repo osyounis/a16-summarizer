@@ -57,21 +57,38 @@ python convert/to_mlx.py --upload-repo <hf-user>/a16-summarizer-mlx-4bit
 
 ---
 
-## Model Card (fill in after eval — this is the portfolio artifact)
+## Model Card (this is the portfolio artifact)
 
 **Model:** `<hf-user>/a16-summarizer-mlx-4bit`
 **Base model:** `Qwen/Qwen2.5-1.5B-Instruct` (Apache 2.0)
 **Fine-tuned on:** DialogSum (MIT), dialogue → abstractive summary
-**Method:** QLoRA, rank `<r>`, alpha `<a>`, `<n>` epochs
-**Quantization:** 4-bit (MLX), group size `<g>`
+**Method:** QLoRA, rank 16, alpha 32, 2 epochs
+**Quantization:** 4-bit (MLX), group size `<g>` *(Stage 4 — not yet measured)*
 
 ### Results
 
-| Metric | Base (Qwen2.5-1.5B) | Fine-tuned | Δ |
-|--------|--------------------:|-----------:|---:|
-| ROUGE-1 | `TODO` | `TODO` | `TODO` |
-| ROUGE-2 | `TODO` | `TODO` | `TODO` |
-| ROUGE-L | `TODO` | `TODO` | `TODO` |
+DialogSum test split, **500 dialogues**, multi-reference ROUGE (max f-measure over the 3 human
+reference summaries per dialogue; 10 dialogues have 2 after identical annotations are deduped).
+Both models decoded identically: greedy, `max_new_tokens=96`.
+
+| Metric | Base (Qwen2.5-1.5B) | Fine-tuned (fp16 merged) | Δ |
+|--------|--------------------:|-------------------------:|---:|
+| ROUGE-1 | 0.3706 | **0.5581** | **+0.1875** |
+| ROUGE-2 | 0.1498 | **0.3101** | **+0.1602** |
+| ROUGE-L | 0.2889 | **0.4808** | **+0.1919** |
+
+All three deltas have a 95% CI excluding zero (paired bootstrap over dialogues, 10k resamples).
+Measured on the **fp16 merged** model — the 4-bit MLX conversion is Stage 4, so these numbers do
+not yet include quantization loss. Full report: [`results/rouge_comparison.md`](results/rouge_comparison.md).
+
+**What the delta actually is:** register calibration, not comprehension. The base model's ROUGE-1
+*recall* (0.616) slightly **exceeds** the fine-tune's (0.604) — it recovers the reference content
+fine, and emits well-formed third-person summaries unprompted. But it writes ~68 tokens against
+27.8-token references, so its precision collapses (0.277 vs 0.540). The fine-tune's gain is
+learning DialogSum's length and house style. That is the job for a task-scoped summarizer, but
+it is not "the base model can't summarize" — it can; it won't stop. Side-by-side outputs,
+including the case where the fine-tune does *worst*, are in
+[`results/qualitative_examples.md`](results/qualitative_examples.md).
 
 ### On-device (iPhone 14 Pro, A16, 6 GB)
 

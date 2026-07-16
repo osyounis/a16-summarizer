@@ -14,6 +14,10 @@ mlx_model/
 data/
 *.jsonl
 
+# Stage 3 generation cache (regenerate with train/eval_rouge.py; the .jsonl half is
+# already covered above, this catches the sidecars). The .md reports ARE committed.
+results/generations_*.meta.json
+
 # --- Secrets ---
 .env
 *.token

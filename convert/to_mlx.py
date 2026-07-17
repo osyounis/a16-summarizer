@@ -5,11 +5,7 @@ Run on: M2 Mac ONLY (MLX is Apple-silicon). Point --merged at a local copy of ou
 (scp'd from the 3080 box) or an HF repo id if you pushed the merged model there.
 
 The convert step and the publish step are one command: mlx_lm.convert can upload directly.
-
-TODO / verify:
-  - Confirm current mlx_lm.convert flags: `python -m mlx_lm convert --help`
-    (expected: --hf-path, --mlx-path, -q, --q-bits, --q-group-size, --upload-repo).
-  - After converting, sanity-check with: python -m mlx_lm generate --model <mlx-path> --prompt "..."
+Flags used: --hf-path, --mlx-path, -q, --q-bits, --q-group-size, --upload-repo.
 """
 
 import argparse

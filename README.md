@@ -14,14 +14,14 @@ quantization) with a bring-your-own model, and ships it running natively on the 
 - **PEFT / LoRA fine-tuning** (QLoRA on a single RTX 3080)
 - **Rigorous evaluation** — ROUGE, base vs. fine-tuned, on a held-out test split
 - **Quantization + on-device conversion** (4-bit, MLX)
-- **On-device deployment** — SwiftUI + MLX Swift, running on the Neural Engine / GPU
+- **On-device deployment** — SwiftUI + MLX Swift, running on the GPU (Metal)
 - **On-device profiling** — tokens/sec, peak memory, model size on real hardware
 
 ## Stack (chosen for clean licensing + on-device fit)
 
 | Piece | Choice | License | Why |
 |-------|--------|---------|-----|
-| Base model | `Qwen/Qwen2.5-1.5B-Instruct` | Apache 2.0 | Clean license (the 3B is **not** Apache); ~1 GB at 4-bit fits 6 GB RAM |
+| Base model | `Qwen/Qwen2.5-1.5B-Instruct` | Apache 2.0 | Clean license (the 3B is **not** Apache); <1 GB (847 MB measured) at 4-bit fits 6 GB RAM |
 | Dataset | DialogSum | MIT | Dialogue summarization; repo-safe (unlike SAMSum's CC BY-NC-ND) |
 | Training | PEFT + TRL + bitsandbytes | — | QLoRA on the RTX 3080 (CUDA) |
 | Runtime | MLX Swift | — | Apple-native, runs on A16, HF-native model loading |
@@ -33,7 +33,6 @@ Code lives here on GitHub. **Weights and data never touch this repo.** The train
 artifacts live on the Hugging Face Hub and are referenced by ID:
 
 - **Code (this repo):** `osyounis/a16-summarizer`
-- **LoRA adapter:** `https://huggingface.co/osyounis/a16-summarizer-lora`
 - **Quantized MLX model (loaded by the app):** `https://huggingface.co/osyounis/a16-summarizer-mlx-4bit`
 
 ## Quickstart
@@ -98,8 +97,18 @@ including the case where the fine-tune does *worst*, are in
 | Measure | Value |
 |---------|------:|
 | Model size on disk | 847 MB (4-bit MLX) |
-| Prefill / decode tokens/sec | `TODO` |
-| Peak memory | `TODO` |
+| Prefill / decode tokens/sec | ~137 / 44.4 |
+| Peak memory | 1.05 GB (831 MB active) |
+
+Measured in the on-device app ([`app/`](app/)) summarizing the sample dialogue: 281-token
+prompt, greedy decoding (temp 0). Prefill = prompt tokens ÷ time-to-first-token (2.05 s);
+decode = 44.4 tok/s sustained. The `increased-memory-limit` entitlement raises the process
+ceiling to ~5.25 GB on the 6 GB device (active 831 MB / 5.25 GB below), so the 1.05 GB peak
+has comfortable headroom.
+
+| Running on iPhone 14 Pro | On-device memory (active / cache / peak) |
+|:---:|:---:|
+| ![a16 Summarizer running on iPhone 14 Pro](results/hero_screen.PNG) | ![On-device memory breakdown](results/extra_memory_information.PNG) |
 
 ### Intended use & limits
 

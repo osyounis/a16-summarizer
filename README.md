@@ -32,11 +32,9 @@ quantization) with a bring-your-own model, and ships it running natively on the 
 Code lives here on GitHub. **Weights and data never touch this repo.** The trained
 artifacts live on the Hugging Face Hub and are referenced by ID:
 
-- **Code (this repo):** `<github-user>/a16-summarizer`
-- **LoRA adapter:** `https://huggingface.co/<hf-user>/a16-summarizer-lora`
-- **Quantized MLX model (loaded by the app):** `https://huggingface.co/<hf-user>/a16-summarizer-mlx-4bit`
-
-> Replace `<github-user>` / `<hf-user>` before first push.
+- **Code (this repo):** `osyounis/a16-summarizer`
+- **LoRA adapter:** `https://huggingface.co/osyounis/a16-summarizer-lora`
+- **Quantized MLX model (loaded by the app):** `https://huggingface.co/osyounis/a16-summarizer-mlx-4bit`
 
 ## Quickstart
 
@@ -50,7 +48,7 @@ python train/eval_rouge.py        # writes results/rouge_comparison.md
 
 # On the M2 Mac (MLX is Apple-silicon only):
 pip install -r requirements-convert.txt
-python convert/to_mlx.py --upload-repo <hf-user>/a16-summarizer-mlx-4bit
+python convert/to_mlx.py --upload-repo osyounis/a16-summarizer-mlx-4bit
 
 # App: see app/README.md
 ```
@@ -59,27 +57,32 @@ python convert/to_mlx.py --upload-repo <hf-user>/a16-summarizer-mlx-4bit
 
 ## Model Card (this is the portfolio artifact)
 
-**Model:** `<hf-user>/a16-summarizer-mlx-4bit`
+**Model:** `osyounis/a16-summarizer-mlx-4bit`
 **Base model:** `Qwen/Qwen2.5-1.5B-Instruct` (Apache 2.0)
 **Fine-tuned on:** DialogSum (MIT), dialogue → abstractive summary
 **Method:** QLoRA, rank 16, alpha 32, 2 epochs
-**Quantization:** 4-bit (MLX), group size `<g>` *(Stage 4 — not yet measured)*
+**Quantization:** 4-bit (MLX), group size 64 (4.501 effective bits/weight)
 
 ### Results
 
 DialogSum test split, **500 dialogues**, multi-reference ROUGE (max f-measure over the 3 human
 reference summaries per dialogue; 10 dialogues have 2 after identical annotations are deduped).
-Both models decoded identically: greedy, `max_new_tokens=96`.
+All models decoded identically: greedy, `max_new_tokens=96`.
 
-| Metric | Base (Qwen2.5-1.5B) | Fine-tuned (fp16 merged) | Δ |
-|--------|--------------------:|-------------------------:|---:|
-| ROUGE-1 | 0.3706 | **0.5581** | **+0.1875** |
-| ROUGE-2 | 0.1498 | **0.3101** | **+0.1602** |
-| ROUGE-L | 0.2889 | **0.4808** | **+0.1919** |
+| Metric | Base (Qwen2.5-1.5B) | Fine-tuned (fp16 merged) | 4-bit MLX (on-device) | Δ tuned vs base |
+|--------|--------------------:|-------------------------:|----------------------:|----------------:|
+| ROUGE-1 | 0.3706 | **0.5581** | 0.5433 | **+0.1875** |
+| ROUGE-2 | 0.1498 | **0.3101** | 0.2905 | **+0.1602** |
+| ROUGE-L | 0.2889 | **0.4808** | 0.4622 | **+0.1919** |
 
-All three deltas have a 95% CI excluding zero (paired bootstrap over dialogues, 10k resamples).
-Measured on the **fp16 merged** model — the 4-bit MLX conversion is Stage 4, so these numbers do
-not yet include quantization loss. Full report: [`results/rouge_comparison.md`](results/rouge_comparison.md).
+All three tuned-vs-base deltas have a 95% CI excluding zero (paired bootstrap over dialogues,
+10k resamples). The **4-bit MLX** column is the model the app actually ships: quantization costs
+~1.5–2 ROUGE points (largest on ROUGE-2, −6.3% relative), with no degeneration — recall is
+essentially unchanged, the small loss is precision from slightly looser output. The 4-bit model
+is scored with identical decoding and scoring, so the columns are directly comparable. Reports:
+[`results/rouge_comparison.md`](results/rouge_comparison.md) (base vs fp16),
+[`results/rouge_mlx_4bit.md`](results/rouge_mlx_4bit.md) and
+[`results/quantization_delta.md`](results/quantization_delta.md) (fp16 vs 4-bit).
 
 **What the delta actually is:** register calibration, not comprehension. The base model's ROUGE-1
 *recall* (0.616) slightly **exceeds** the fine-tune's (0.604) — it recovers the reference content
@@ -94,7 +97,7 @@ including the case where the fine-tune does *worst*, are in
 
 | Measure | Value |
 |---------|------:|
-| Model size on disk | `TODO` |
+| Model size on disk | 847 MB (4-bit MLX) |
 | Prefill / decode tokens/sec | `TODO` |
 | Peak memory | `TODO` |
 

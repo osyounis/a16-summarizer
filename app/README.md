@@ -9,7 +9,7 @@ Start from Apple's example rather than from scratch:
 1. Clone [`ml-explore/mlx-swift-examples`](https://github.com/ml-explore/mlx-swift-examples).
 2. Use the **`LLMEval`** target as the base (it's a working on-device chat/generation app).
 3. Change the model source to your Hub repo id:
-   `<hf-user>/a16-summarizer-mlx-4bit` — mlx-swift can load a model from the Hub.
+   `osyounis/a16-summarizer-mlx-4bit` — mlx-swift can load a model from the Hub.
    (Or bundle a local copy for a fully offline first launch.)
 4. Swap the prompt UI for a "paste dialogue → summarize" flow using the **same** system +
    instruction template as `train/prepare_data.py`, so on-device behavior matches eval.

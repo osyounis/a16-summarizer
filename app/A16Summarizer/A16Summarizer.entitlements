@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Lets the process exceed the default memory limit so the 4-bit model fits comfortably. -->
+	<key>com.apple.developer.kernel.increased-memory-limit</key>
+	<true/>
+	<!-- Outgoing connections: first-launch model download from the Hugging Face Hub. -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+</dict>
+</plist>

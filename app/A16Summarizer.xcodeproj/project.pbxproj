@@ -1,0 +1,433 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1872A0DB72AB447E4CD82AAB /* Tokenizers in Frameworks */ = {isa = PBXBuildFile; productRef = 71BF1FB9193EC410CD2F6ED6 /* Tokenizers */; };
+		1E92349DBACFE84159667E4E /* HuggingFace in Frameworks */ = {isa = PBXBuildFile; productRef = 5E558CB8640C48C75C6EA352 /* HuggingFace */; };
+		5332DAFF134880B8F6E761BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B2FEB781A454DE3765800E /* ContentView.swift */; };
+		682015C3C9AD8B1BCAA151BA /* A16SummarizerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76383F1B44558325FB0D8F00 /* A16SummarizerApp.swift */; };
+		6BD6D0DCE40E8123CFBE83A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 753F7C5575C6897890ABDA6E /* Assets.xcassets */; };
+		7B829D8C2E2D05A6E9975544 /* MLXHuggingFace in Frameworks */ = {isa = PBXBuildFile; productRef = 165A0C7A5DE89EAC2877DC60 /* MLXHuggingFace */; };
+		7F027117581DA5BCC7A9C6A0 /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 24AEB54FB4B87C60D537F1FA /* MLXLLM */; };
+		85C48EA9550BE190A9C8E4F6 /* MLX in Frameworks */ = {isa = PBXBuildFile; productRef = 689A9A36371B425E14557B29 /* MLX */; };
+		B8B1218D3A07FE20C66B2E51 /* Summarizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67563C2AD1E49B66AA194105 /* Summarizer.swift */; };
+		F55EEF47C7236E34987879F0 /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 507C5F4EF7D5B1B76ECD076B /* MLXLMCommon */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0B1B9BD423275ABB6AD85D22 /* A16Summarizer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = A16Summarizer.entitlements; sourceTree = "<group>"; };
+		67563C2AD1E49B66AA194105 /* Summarizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Summarizer.swift; sourceTree = "<group>"; };
+		753F7C5575C6897890ABDA6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		76383F1B44558325FB0D8F00 /* A16SummarizerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A16SummarizerApp.swift; sourceTree = "<group>"; };
+		79B2FEB781A454DE3765800E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A973610AF6D7BC4DC2CCFC79 /* A16Summarizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A16Summarizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		64C97C0929726CAB42E1493B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F027117581DA5BCC7A9C6A0 /* MLXLLM in Frameworks */,
+				F55EEF47C7236E34987879F0 /* MLXLMCommon in Frameworks */,
+				7B829D8C2E2D05A6E9975544 /* MLXHuggingFace in Frameworks */,
+				85C48EA9550BE190A9C8E4F6 /* MLX in Frameworks */,
+				1E92349DBACFE84159667E4E /* HuggingFace in Frameworks */,
+				1872A0DB72AB447E4CD82AAB /* Tokenizers in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		93CE07A466B34D1F02C705A9 = {
+			isa = PBXGroup;
+			children = (
+				D6E4855F658FCE04F6242E0E /* A16Summarizer */,
+				E7E210E956C44DC217512F62 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D6E4855F658FCE04F6242E0E /* A16Summarizer */ = {
+			isa = PBXGroup;
+			children = (
+				0B1B9BD423275ABB6AD85D22 /* A16Summarizer.entitlements */,
+				76383F1B44558325FB0D8F00 /* A16SummarizerApp.swift */,
+				753F7C5575C6897890ABDA6E /* Assets.xcassets */,
+				79B2FEB781A454DE3765800E /* ContentView.swift */,
+				67563C2AD1E49B66AA194105 /* Summarizer.swift */,
+			);
+			path = A16Summarizer;
+			sourceTree = "<group>";
+		};
+		E7E210E956C44DC217512F62 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A973610AF6D7BC4DC2CCFC79 /* A16Summarizer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5C0F86044AFC1DA2AD31B968 /* A16Summarizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4CDAB614603040FF573A336C /* Build configuration list for PBXNativeTarget "A16Summarizer" */;
+			buildPhases = (
+				0924C677095B073EA2A39D8F /* Sources */,
+				CB6BF585CB2833DD6DEE772C /* Resources */,
+				64C97C0929726CAB42E1493B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = A16Summarizer;
+			packageProductDependencies = (
+				24AEB54FB4B87C60D537F1FA /* MLXLLM */,
+				507C5F4EF7D5B1B76ECD076B /* MLXLMCommon */,
+				165A0C7A5DE89EAC2877DC60 /* MLXHuggingFace */,
+				689A9A36371B425E14557B29 /* MLX */,
+				5E558CB8640C48C75C6EA352 /* HuggingFace */,
+				71BF1FB9193EC410CD2F6ED6 /* Tokenizers */,
+			);
+			productName = A16Summarizer;
+			productReference = A973610AF6D7BC4DC2CCFC79 /* A16Summarizer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CB3A418602A6FD3F26B32922 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					5C0F86044AFC1DA2AD31B968 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C9FBE0830F0FEDD91B76FB8D /* Build configuration list for PBXProject "A16Summarizer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 93CE07A466B34D1F02C705A9;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				919372D29B05DB1E31D6A3E3 /* XCRemoteSwiftPackageReference "mlx-swift" */,
+				AB1266D29211AB6DA5E91E10 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */,
+				3BCCFCE430F1F78B698568F1 /* XCRemoteSwiftPackageReference "swift-huggingface" */,
+				B0EB58B4555E5AFF35999589 /* XCRemoteSwiftPackageReference "swift-transformers" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E7E210E956C44DC217512F62 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5C0F86044AFC1DA2AD31B968 /* A16Summarizer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CB6BF585CB2833DD6DEE772C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BD6D0DCE40E8123CFBE83A0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0924C677095B073EA2A39D8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				682015C3C9AD8B1BCAA151BA /* A16SummarizerApp.swift in Sources */,
+				5332DAFF134880B8F6E761BC /* ContentView.swift in Sources */,
+				B8B1218D3A07FE20C66B2E51 /* Summarizer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		3D6D186D29BE1B5C54FDB734 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		50A25C439486F397B3F443B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = A16Summarizer/A16Summarizer.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 8GKQTNM3Q2;
+				INFOPLIST_KEY_CFBundleDisplayName = "a16 Summarizer";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.osyounis.a16summarizer;
+				PRODUCT_NAME = A16Summarizer;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C524128E0B35BA1C8BD96DFA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D435740C7F977A8B432E9806 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = A16Summarizer/A16Summarizer.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 8GKQTNM3Q2;
+				INFOPLIST_KEY_CFBundleDisplayName = "a16 Summarizer";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.osyounis.a16summarizer;
+				PRODUCT_NAME = A16Summarizer;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4CDAB614603040FF573A336C /* Build configuration list for PBXNativeTarget "A16Summarizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D435740C7F977A8B432E9806 /* Debug */,
+				50A25C439486F397B3F443B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C9FBE0830F0FEDD91B76FB8D /* Build configuration list for PBXProject "A16Summarizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D6D186D29BE1B5C54FDB734 /* Debug */,
+				C524128E0B35BA1C8BD96DFA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3BCCFCE430F1F78B698568F1 /* XCRemoteSwiftPackageReference "swift-huggingface" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huggingface/swift-huggingface.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.9.0;
+			};
+		};
+		919372D29B05DB1E31D6A3E3 /* XCRemoteSwiftPackageReference "mlx-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift";
+			requirement = {
+				kind = exactVersion;
+				version = 0.31.4;
+			};
+		};
+		AB1266D29211AB6DA5E91E10 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-lm.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.31.3;
+			};
+		};
+		B0EB58B4555E5AFF35999589 /* XCRemoteSwiftPackageReference "swift-transformers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huggingface/swift-transformers";
+			requirement = {
+				kind = exactVersion;
+				version = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		165A0C7A5DE89EAC2877DC60 /* MLXHuggingFace */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB1266D29211AB6DA5E91E10 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXHuggingFace;
+		};
+		24AEB54FB4B87C60D537F1FA /* MLXLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB1266D29211AB6DA5E91E10 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXLLM;
+		};
+		507C5F4EF7D5B1B76ECD076B /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB1266D29211AB6DA5E91E10 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXLMCommon;
+		};
+		5E558CB8640C48C75C6EA352 /* HuggingFace */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3BCCFCE430F1F78B698568F1 /* XCRemoteSwiftPackageReference "swift-huggingface" */;
+			productName = HuggingFace;
+		};
+		689A9A36371B425E14557B29 /* MLX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 919372D29B05DB1E31D6A3E3 /* XCRemoteSwiftPackageReference "mlx-swift" */;
+			productName = MLX;
+		};
+		71BF1FB9193EC410CD2F6ED6 /* Tokenizers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B0EB58B4555E5AFF35999589 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = Tokenizers;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = CB3A418602A6FD3F26B32922 /* Project object */;
+}

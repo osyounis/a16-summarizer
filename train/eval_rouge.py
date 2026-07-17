@@ -45,8 +45,22 @@ import evaluate
 import numpy as np
 import torch
 import transformers
-from rouge_score import rouge_scorer
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
+
+# Model-agnostic scoring + diagnostics live in rouge_common so the Stage 4 MLX eval
+# (convert/eval_mlx_rouge.py) reuses the exact same path instead of duplicating it. Re-imported
+# here; this module's behavior is unchanged (these were moved verbatim out of this file).
+from rouge_common import (
+    PREAMBLE_RE,
+    ROUGE_TYPES,
+    diagnostics,
+    load_test,
+    means,
+    paired_bootstrap,
+    score_precision_recall,
+    score_rouge,
+    strip_preamble,
+)
 
 BASE_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 MERGED_MODEL = "out/merged"
@@ -55,22 +69,6 @@ RESULTS = Path("results")
 
 PAD_ID = 151643  # <|endoftext|>
 EOS_IDS = [151645, 151643]  # <|im_end|>, <|endoftext|> — matches base's shipped stop set
-
-ROUGE_TYPES = ["rouge1", "rouge2", "rougeL"]
-# rougeLsum is dropped: it's rougeL over \n-split sentences, and DialogSum refs have no newlines,
-# so it degenerates to ~rougeL and just adds a confusing near-duplicate column.
-
-# Applied at most once, to the FIRST line, IDENTICALLY to both models — stripping only base would
-# be removing base's handicap. Diagnostic only, never the headline.
-#
-# Empirically this matches NOTHING on either model: stock Qwen does not open with "Sure! Here's a
-# summary:" on this prompt, so the expected formatting confound doesn't exist. Kept as a live
-# control rather than deleted — the report states when it's inert, which is itself the finding.
-# Base's real disadvantage is length; see the precision/recall decomposition.
-PREAMBLE_RE = re.compile(
-    r"^(sure|certainly|of course|okay|here('s| is| are)|the following)\b.*:\s*$",
-    re.IGNORECASE,
-)
 
 
 def parse_args():
@@ -89,26 +87,6 @@ def parse_args():
 
 
 # --------------------------------------------------------------------------- data
-
-
-def load_test(path: str, limit: int | None) -> list[dict]:
-    with open(path) as f:
-        rows = [json.loads(line) for line in f]
-
-    for i, r in enumerate(rows):
-        if not r.get("references"):
-            raise SystemExit(f"row {i} has no `references` — rerun train/prepare_data.py")
-        if not r["prompt"].endswith("<|im_start|>assistant\n"):
-            raise SystemExit(
-                f"row {i}'s prompt doesn't end with the assistant header — the Stage 1 format "
-                "contract is broken; base and tuned would not be compared on the trained format."
-            )
-
-    if limit is not None and limit < len(rows):
-        # Stride, not head: rows[:N] takes test_0..test_N-1 in dataset order, which has no
-        # shuffling guarantee (topic clustering, length drift). Stride spreads across the corpus.
-        rows = rows[:: len(rows) // limit][:limit]
-    return rows
 
 
 def run_tag(limit: int | None) -> str:
@@ -281,78 +259,6 @@ def load_cache(tag, model_tag, rows, gen):
     return [c["prediction"] for c in cached], [
         {"n_new_tokens": c["n_new_tokens"], "hit_cap": c["hit_cap"]} for c in cached
     ]
-
-
-# ------------------------------------------------------------------------ scoring
-
-
-def score_rouge(rouge, preds: list[str], rows: list[dict], use_stemmer: bool) -> dict:
-    """Per-example f-measures. references as list-of-lists => multi-reference MAX per rouge type."""
-    return rouge.compute(
-        predictions=preds,
-        references=[r["references"] for r in rows],
-        rouge_types=ROUGE_TYPES,
-        use_stemmer=use_stemmer,
-        use_aggregator=False,
-    )
-
-
-def means(per_example: dict) -> dict:
-    return {k: float(np.mean(v)) for k, v in per_example.items()}
-
-
-def score_precision_recall(preds: list[str], rows: list[dict], use_stemmer: bool) -> dict:
-    """Mean precision/recall/f per rouge type, via rouge_scorer directly.
-
-    evaluate's wrapper throws precision and recall away (`result[key] = [s.fmeasure ...]`), but
-    they are what distinguishes "this model summarizes better" from "this model is just shorter":
-    a verbose model that captures the content scores high recall and low precision. score_multi is
-    exactly what evaluate calls under the hood, so these numbers are consistent with the headline
-    (asserted in main()).
-    """
-    scorer = rouge_scorer.RougeScorer(ROUGE_TYPES, use_stemmer=use_stemmer)
-    acc = {k: {"precision": [], "recall": [], "fmeasure": []} for k in ROUGE_TYPES}
-    for pred, row in zip(preds, rows):
-        score = scorer.score_multi(row["references"], pred)
-        for k in ROUGE_TYPES:
-            acc[k]["precision"].append(score[k].precision)
-            acc[k]["recall"].append(score[k].recall)
-            acc[k]["fmeasure"].append(score[k].fmeasure)
-    return {k: {m: float(np.mean(v)) for m, v in d.items()} for k, d in acc.items()}
-
-
-def paired_bootstrap(base_scores, tuned_scores, n=10000, seed=0):
-    """95% CI and p-value on the mean delta, resampling dialogues (paired)."""
-    rng = np.random.default_rng(seed)
-    b, t = np.asarray(base_scores), np.asarray(tuned_scores)
-    diff = t - b
-    idx = rng.integers(0, len(diff), size=(n, len(diff)))
-    boot = diff[idx].mean(axis=1)
-    return {
-        "delta": float(diff.mean()),
-        "ci_lo": float(np.percentile(boot, 2.5)),
-        "ci_hi": float(np.percentile(boot, 97.5)),
-        "p_tuned_not_better": float((boot <= 0).mean()),
-    }
-
-
-def strip_preamble(text: str) -> str:
-    lines = text.split("\n")
-    if lines and PREAMBLE_RE.match(lines[0].strip()):
-        return "\n".join(lines[1:]).strip()
-    return text
-
-
-def diagnostics(preds: list[str], meta: list[dict]) -> dict:
-    n = len(preds)
-    toks = [m["n_new_tokens"] for m in meta]
-    return {
-        "preamble_rate": sum(strip_preamble(p) != p for p in preds) / n,
-        "mean_output_tokens": float(np.mean(toks)),
-        "median_output_tokens": float(np.median(toks)),
-        "truncation_rate": sum(m["hit_cap"] for m in meta) / n,
-        "empty_rate": sum(not p.strip() for p in preds) / n,
-    }
 
 
 # ------------------------------------------------------------------------ reports

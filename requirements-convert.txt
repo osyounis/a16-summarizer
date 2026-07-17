@@ -2,3 +2,11 @@
 mlx
 mlx-lm
 huggingface_hub
+
+# Stage 4 MLX ROUGE eval (convert/eval_mlx_rouge.py) — reuses train/rouge_common.py.
+# transformers arrives transitively via mlx-lm; datasets is needed by train/prepare_data.py
+# to rebuild data/test.jsonl. Deliberately NO torch: the reused scoring path is torch-free.
+datasets
+evaluate
+rouge_score
+numpy

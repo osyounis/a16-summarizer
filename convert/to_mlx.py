@@ -24,7 +24,7 @@ def main():
     ap.add_argument("--q-bits", type=int, default=4)
     ap.add_argument("--q-group-size", type=int, default=64)
     ap.add_argument("--upload-repo", default=None,
-                    help="e.g. <hf-user>/a16-summarizer-mlx-4bit")
+                    help="e.g. osyounis/a16-summarizer-mlx-4bit")
     args = ap.parse_args()
 
     cmd = [

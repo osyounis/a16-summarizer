@@ -1,10 +1,10 @@
-# Qualitative examples — base vs. fine-tuned
+# Qualitative examples: base vs fine-tuned
 
-Five dialogues at fixed quantiles of the per-example ROUGE-L delta (tuned − base), ranked ascending. Deterministic and unbiased by construction: the first example is where the fine-tune did **worst** relative to base.
+Five dialogues picked at fixed quantiles of the per-example ROUGE-L delta (tuned minus base), sorted ascending. Picking by quantile keeps the selection honest, since the examples choose themselves. The first one is where the fine-tune did worst relative to base.
 
 ---
 
-## 0% (worst for tuned) — test row 357
+## 0% (worst for tuned): test row 357
 
 ROUGE-L: base 0.5294 | tuned 0.2609 | Δ -0.2685
 
@@ -36,7 +36,7 @@ ROUGE-L: base 0.5294 | tuned 0.2609 | Δ -0.2685
 
 ---
 
-## 25% — test row 484
+## 25%: test row 484
 
 ROUGE-L: base 0.3043 | tuned 0.3818 | Δ +0.0775
 
@@ -86,7 +86,7 @@ ROUGE-L: base 0.3043 | tuned 0.3818 | Δ +0.0775
 
 ---
 
-## 50% (median) — test row 179
+## 50% (median): test row 179
 
 ROUGE-L: base 0.3208 | tuned 0.5000 | Δ +0.1792
 
@@ -121,7 +121,7 @@ ROUGE-L: base 0.3208 | tuned 0.5000 | Δ +0.1792
 
 ---
 
-## 75% — test row 38
+## 75%: test row 38
 
 ROUGE-L: base 0.1463 | tuned 0.4314 | Δ +0.2850
 
@@ -161,7 +161,7 @@ ROUGE-L: base 0.1463 | tuned 0.4314 | Δ +0.2850
 
 ---
 
-## 100% (best for tuned) — test row 267
+## 100% (best for tuned): test row 267
 
 ROUGE-L: base 0.1579 | tuned 1.0000 | Δ +0.8421
 

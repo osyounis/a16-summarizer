@@ -1,9 +1,9 @@
-# ROUGE — base vs. fine-tuned (DialogSum test)
+# ROUGE: base vs fine-tuned (DialogSum test)
 
-Qwen2.5-1.5B-Instruct, stock vs. QLoRA fine-tune (r=16, a=32) merged to fp16.
-**500 dialogues**, multi-reference ROUGE (max f-measure over 2/3 human refs per dialogue).
+Qwen2.5-1.5B-Instruct, stock vs QLoRA fine-tune (r=16, a=32) merged to fp16.
+500 dialogues, multi-reference ROUGE (max f-measure over 2/3 human refs per dialogue).
 
-## Headline — raw model output
+## Headline (raw model output)
 
 Exactly what each model emits, no post-processing. This is the number for the README.
 
@@ -17,7 +17,7 @@ Exactly what each model emits, no post-processing. This is the number for the RE
 - **rouge2** Δ = +0.1602, 95% CI [+0.1446, +0.1766], p(tuned not better) = 0.0000
 - **rougeL** Δ = +0.1919, 95% CI [+0.1772, +0.2067], p(tuned not better) = 0.0000
 
-_Paired bootstrap over dialogues, 10,000 resamples, seed 0._
+Paired bootstrap over dialogues, 10,000 resamples, seed 0.
 
 ## Diagnostics
 
@@ -29,13 +29,23 @@ _Paired bootstrap over dialogues, 10,000 resamples, seed 0._
 | truncation rate (hit 96 cap) | 0.170 | 0.002 |
 | empty output rate | 0.000 | 0.000 |
 
-Human reference summaries average 27.8 tokens. The base model is not malformed — it emits correct third-person `#Person1#`-style summaries — it is simply much longer and more detailed than DialogSum's house style. The decomposition below tests what that costs it.
+The human reference summaries average 27.8 tokens. The base model's output is not
+malformed; it writes correct third-person `#Person1#`-style summaries. It's just much
+longer and more detailed than DialogSum's house style. The decomposition below looks at
+what that costs it.
 
-A non-zero base truncation rate raises a fair objection: is the `max_new_tokens=96` cap handicapping base? Re-run with `--max-new-tokens 192` to check. It isn't: doubling the cap drives base's truncation to ~0 and leaves its ROUGE *slightly lower* (it simply writes more, so precision falls further), while the fine-tune's scores are bit-identical because it never reaches the cap. The delta is not a truncation artifact.
+The non-zero base truncation rate raises a fair question: is the `max_new_tokens=96` cap
+handicapping the base model? I re-ran with `--max-new-tokens 192` to check, and it isn't.
+Doubling the cap drives base truncation to roughly zero and leaves its ROUGE slightly
+lower (it simply writes more, so precision falls further), while the fine-tune's scores
+are bit-identical because it never reaches the cap. The delta is not a truncation
+artifact.
 
-## Why the delta? Precision / recall decomposition
+## Precision / recall decomposition
 
-The question the headline can't answer on its own: did the fine-tune teach **summarization**, or just teach **brevity**? A verbose model that captures the content scores high recall and low precision.
+The headline alone can't tell you whether the fine-tune learned summarization or just
+brevity. A verbose model that captures the content will score high recall and low
+precision.
 
 | Metric | Model | Precision | Recall | F |
 |---|---|---:|---:|---:|
@@ -46,7 +56,12 @@ The question the headline can't answer on its own: did the fine-tune teach **sum
 | rougeL | base | 0.2138 | 0.4939 | 0.2889 |
 | rougeL | tuned | 0.4643 | 0.5221 | 0.4808 |
 
-**Read:** on ROUGE-1 the base model's recall is 0.616 vs the fine-tune's 0.604, while its precision is 0.277 vs 0.540. Base recovers **as much reference content as the fine-tune** and loses almost entirely on precision — i.e. the gain here is dominated by **length/style calibration**, not by better content selection. That is a real and useful result for a summarizer (matching the target register is the job), but it should not be reported as 'the base model can't summarize'. It can; it just won't stop.
+On ROUGE-1 the base model's recall is 0.616 vs the fine-tune's 0.604, while its precision
+is 0.277 vs 0.540. The base model recovers about as much reference content as the
+fine-tune does, and loses almost entirely on precision. In other words, the gain here is
+dominated by length and style calibration rather than better content selection. That is a
+real and useful result for a summarizer (matching the target register is the job), but it
+shouldn't be reported as "the base model can't summarize". It can; it just won't stop.
 
 ### Preamble check
 
@@ -56,11 +71,16 @@ Regex, applied at most once to the first line, identically to both models:
 ^(sure|certainly|of course|okay|here('s| is| are)|the following)\b.*:\s*$
 ```
 
-**It matches nothing (0.000 on both models), so this control is inert and the stripped scores are identical to the headline.** Worth stating rather than quietly dropping: the expected confound — stock Qwen opening with "Sure! Here's a summary:" and being punished for formatting rather than comprehension — *does not occur*. Base's disadvantage is length, not preamble, which is why the decomposition above is the analysis that matters.
+It matches nothing (0.000 on both models), so this control is inert and the stripped
+scores are identical to the headline. I'm noting it rather than quietly dropping it: the
+confound I expected, stock Qwen opening with "Sure! Here's a summary:" and getting
+punished for formatting rather than comprehension, simply doesn't occur. The base model's
+disadvantage is length, not preamble, which is why the decomposition above is the
+analysis that matters.
 
 ## Run config
 
-- examples: **500**
+- examples: 500
 - refs per dialogue: {2: 10, 3: 490}
 - decoding (both models, identical): `{"max_new_tokens": 96, "do_sample": false, "num_beams": 1, "repetition_penalty": 1.0, "pad_token_id": 151643, "eos_token_id": [151645, 151643], "transformers_version": "5.13.1"}`
 - stemmer: `use_stemmer=True` | aggregator: own mean over per-example scores
@@ -69,4 +89,7 @@ Regex, applied at most once to the first line, identically to both models:
 - tuned: 0.0s
 - transformers 5.13.1, torch 2.13.0+cu130
 
-_Note on comparability: `use_stemmer=True` follows the ROUGE-1.5.5 `-m` convention most summarization papers use (HF `evaluate` defaults it to False). We state our setting rather than claim to match the DialogSum paper's exact configuration. The base-vs-tuned delta is the claim; absolute values are context._
+Note on comparability: `use_stemmer=True` follows the ROUGE-1.5.5 `-m` convention most
+summarization papers use (HF `evaluate` defaults it to False). I'm stating the setting
+rather than claiming to match the DialogSum paper's exact configuration. The base-vs-tuned
+delta is the claim; the absolute values are context.

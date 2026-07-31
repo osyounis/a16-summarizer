@@ -1,10 +1,10 @@
-# app — a16 Summarizer (SwiftUI + MLX Swift, on-device)
+# A16 Summarizer app (SwiftUI + MLX Swift, on-device)
 
-A minimal, standalone SwiftUI app that runs the
+A small standalone SwiftUI app that runs the
 [`osyounis/a16-summarizer-mlx-4bit`](https://huggingface.co/osyounis/a16-summarizer-mlx-4bit)
-model **entirely on-device** (iPhone, Apple GPU via MLX Swift). Paste a conversation, tap
-**Summarize**, get a concise third-person summary — no server, no network after the
-first-launch model download.
+model entirely on-device (iPhone, Apple GPU via MLX Swift). Paste a conversation, tap
+Summarize, and you get a short third-person summary. No server, and no network at all
+after the first-launch model download.
 
 ## What's here
 
@@ -20,44 +20,49 @@ app/
     └── Assets.xcassets/
 ```
 
-Three small Swift files — everything model-specific lives in `Summarizer.swift`.
+Three small Swift files. Everything model-specific lives in `Summarizer.swift`.
 
-## Train / inference match (why summaries match the reported ROUGE)
+## Matching training at inference time
 
-`Summarizer.swift` reproduces the exact setup from training/eval:
+The reported ROUGE numbers only mean anything if the app runs the model the same way the
+eval did, so `Summarizer.swift` reproduces the exact setup from training/eval:
 
-- **Prompt** (from `train/prepare_data.py`): system message
+- Prompt (from `train/prepare_data.py`): system message
   *"You are a helpful assistant that writes a concise, third-person summary of a conversation."*
-  \+ user *"Summarize the following conversation:\n\n{dialogue}"*, wrapped by the Qwen chat
-  template (`UserInput` → `prepare(input:)`).
-- **Decoding** (from `convert/eval_mlx_rouge.py`): greedy, `temperature: 0` (→ `ArgMaxSampler`),
+  plus user *"Summarize the following conversation:\n\n{dialogue}"*, wrapped in the Qwen
+  chat template (`UserInput` via `prepare(input:)`).
+- Decoding (from `convert/eval_mlx_rouge.py`): greedy, `temperature: 0` (`ArgMaxSampler`),
   `maxTokens: 96`, stop on `<|im_end|>` (`extraEOSTokens`).
 
-## Build & run
+## Build and run
 
-Requirements: Xcode 16+ (built with Xcode 26), a **physical iPhone**. MLX also needs the
-Metal Toolchain once per machine: `xcodebuild -downloadComponent MetalToolchain`.
+You need Xcode 16 or newer (this was built with Xcode 26) and a physical iPhone. MLX also
+needs the Metal Toolchain, once per machine: `xcodebuild -downloadComponent MetalToolchain`.
 
 1. Open `A16Summarizer.xcodeproj` in Xcode.
-2. Target **A16Summarizer** → **Signing & Capabilities** → set your **Team** (Automatic signing).
-   The bundle id is `com.osyounis.a16summarizer` — change the reverse-DNS prefix to your own.
-3. Select your iPhone as the run destination → **⌘R**.
-   - On first build, Xcode prompts to **Trust & Enable** the `mlx-swift-lm` Swift macros — accept (one-time).
-   - On first launch, the app downloads the model (~847 MB) from the Hub over Wi-Fi.
+2. In the A16Summarizer target, go to Signing & Capabilities and set your Team
+   (Automatic signing). The bundle id is `com.osyounis.a16summarizer`; change the
+   reverse-DNS prefix to your own.
+3. Select your iPhone as the run destination and hit ⌘R.
+   - On the first build, Xcode asks to Trust & Enable the `mlx-swift-lm` Swift macros.
+     Accept it, it's a one-time thing.
+   - On first launch the app downloads the model (~847 MB) from the Hub, so be on Wi-Fi.
 
-Regenerate the project after editing `project.yml`: `brew install xcodegen && cd app && xcodegen generate`.
+If you edit `project.yml`, regenerate the project with
+`brew install xcodegen && cd app && xcodegen generate`.
 
-> **The iOS Simulator will not run this.** MLX needs a real Metal GPU; on the simulator
-> `mlx::core::metal::Device` fails to initialize and the app aborts at launch. Build and run
-> on the physical device — which is the point of the exercise anyway.
+Note that the iOS Simulator will not run this. MLX needs a real Metal GPU; on the
+simulator `mlx::core::metal::Device` fails to initialize and the app aborts at launch.
+Build to the physical device, which is sort of the point of the project anyway.
 
 ## Entitlements
 
-Minimal, device-run only (no App Store / distribution scaffolding):
+Kept minimal since this is device-run only, with no App Store or distribution scaffolding:
 
-- `com.apple.developer.kernel.increased-memory-limit` — raises the process memory ceiling
-  (~5.25 GB on a 6 GB device) so the 4-bit model has comfortable headroom.
-- `com.apple.security.network.client` — first-launch Hub download (a macOS-sandbox key; iOS ignores it).
+- `com.apple.developer.kernel.increased-memory-limit` raises the process memory ceiling
+  (about 5.25 GB on a 6 GB device) so the 4-bit model has comfortable headroom.
+- `com.apple.security.network.client` covers the first-launch Hub download (it's a
+  macOS-sandbox key; iOS ignores it).
 
 ## Measured on iPhone 14 Pro (A16, 6 GB)
 
@@ -67,14 +72,16 @@ Minimal, device-run only (no App Store / distribution scaffolding):
 | Prefill / decode tokens/sec | ~137 / 44.4 |
 | Peak memory | 1.05 GB (831 MB active) |
 
-See the repo [`README.md`](../README.md) model card and `results/hero_screen.PNG`.
+See the model card in the repo [`README.md`](../README.md) and `results/hero_screen.PNG`.
 
 ## Attribution
 
-Structure adapted from Apple's `ml-explore/mlx-swift-examples` (`LLMBasic`), MIT-licensed —
-see the repo `NOTICE`. The model-specific code, prompt formatting, and UI are original.
+The structure is adapted from Apple's `ml-explore/mlx-swift-examples` (`LLMBasic`), which
+is MIT-licensed; see the repo `NOTICE`. The model-specific code, prompt formatting, and UI
+are original.
 
 ## Stretch: Core ML (Stage 6)
 
-Only after MLX works. Convert with `coremltools`, handle the stateful KV-cache path, run on
-the Neural Engine. If it gets hard, a short "what I tried" writeup is itself worth shipping.
+Only after MLX works. Convert with `coremltools`, deal with the stateful KV-cache path,
+and run on the Neural Engine. If it turns into a slog, a short "what I tried" writeup is
+still worth shipping.

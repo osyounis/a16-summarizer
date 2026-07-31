@@ -1,11 +1,13 @@
-# ROUGE — 4-bit MLX (DialogSum test)
+# ROUGE: 4-bit MLX (DialogSum test)
 
-Qwen2.5-1.5B-Instruct QLoRA fine-tune (r=16, a=32), merged to fp16, then quantized to **4-bit MLX** (q-bits 4, group size 64).
-**500 dialogues**, multi-reference ROUGE (max f-measure over 2/3 human refs per dialogue).
+Qwen2.5-1.5B-Instruct QLoRA fine-tune (r=16, a=32), merged to fp16, then quantized to
+4-bit MLX (q-bits 4, group size 64). 500 dialogues, multi-reference ROUGE (max f-measure
+over 2/3 human refs per dialogue).
 
-Same decoding and same scoring as the fp16 run (`results/rouge_comparison.md`), so these numbers are directly comparable. Quantization delta vs fp16: `results/quantization_delta.md`.
+Same decoding and same scoring as the fp16 run (`results/rouge_comparison.md`), so these
+numbers are directly comparable. Quantization delta vs fp16: `results/quantization_delta.md`.
 
-## Headline — raw model output
+## Headline (raw model output)
 
 | Metric | 4-bit MLX |
 |---|---:|
@@ -33,7 +35,7 @@ Same decoding and same scoring as the fp16 run (`results/rouge_comparison.md`), 
 
 ## Run config
 
-- examples: **500**
+- examples: 500
 - refs per dialogue: {2: 10, 3: 490}
 - decoding (matches fp16): greedy (`temp=0.0`, no top_p/top_k), `max_tokens=96`, no repetition penalty, stop on `{151645, 151643}`
 - prompt: Stage 1 chat template, fed verbatim (ends `<|im_start|>assistant\n`)

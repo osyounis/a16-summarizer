@@ -9,6 +9,10 @@ Apple draws the on-device LLM line at the A17 Pro with 8 GB of RAM. This repo sh
 scoped, task-specific summarizer working below that line on an A16 with 6 GB, and tries
 to document why the tradeoffs (model size, bit width, memory) make that possible.
 
+*Built with Claude Code. Architecture, training, and evaluation decisions are my own.*
+
+---
+
 ## What this covers
 
 - QLoRA fine-tuning with PEFT, on a single RTX 3080

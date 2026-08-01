@@ -11,6 +11,8 @@ to document why the tradeoffs (model size, bit width, memory) make that possible
 
 *Built with Claude Code. Architecture, training, and evaluation decisions are my own.*
 
+---
+
 ## What this covers
 
 - QLoRA fine-tuning with PEFT, on a single RTX 3080

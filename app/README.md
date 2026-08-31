@@ -46,7 +46,7 @@ needs the Metal Toolchain, once per machine: `xcodebuild -downloadComponent Meta
 3. Select your iPhone as the run destination and hit ⌘R.
    - On the first build, Xcode asks to Trust & Enable the `mlx-swift-lm` Swift macros.
      Accept it, it's a one-time thing.
-   - On first launch the app downloads the model (~847 MB) from the Hub, so be on Wi-Fi.
+   - On first launch the app downloads the model (~880 MB) from the Hub, so be on Wi-Fi.
 
 If you edit `project.yml`, regenerate the project with
 `brew install xcodegen && cd app && xcodegen generate`.
@@ -68,7 +68,7 @@ Kept minimal since this is device-run only, with no App Store or distribution sc
 
 | Measure | Value |
 |---|---|
-| Model size on disk | 847 MB |
+| Model size on disk | 880 MB |
 | Prefill / decode tokens/sec | ~137 / 44.4 |
 | Peak memory | 1.05 GB (831 MB active) |
 

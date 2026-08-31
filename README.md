@@ -27,7 +27,7 @@ Picked mainly for clean licensing and on-device fit.
 
 | Piece | Choice | License | Why |
 |-------|--------|---------|-----|
-| Base model | `Qwen/Qwen2.5-1.5B-Instruct` | Apache 2.0 | Apache-licensed (the 3B isn't); 847 MB at 4-bit, fits in 6 GB RAM |
+| Base model | `Qwen/Qwen2.5-1.5B-Instruct` | Apache 2.0 | Apache-licensed (the 3B isn't); 880 MB at 4-bit, fits in 6 GB RAM |
 | Dataset | DialogSum | MIT | Dialogue summarization, and repo-safe (SAMSum is CC BY-NC-ND) |
 | Training | PEFT + TRL + bitsandbytes | - | QLoRA on the RTX 3080 (CUDA) |
 | Runtime | MLX Swift | - | Apple-native, runs on A16, loads models straight from HF |
@@ -104,7 +104,7 @@ are in [`results/qualitative_examples.md`](results/qualitative_examples.md).
 
 | Measure | Value |
 |---------|------:|
-| Model size on disk | 847 MB (4-bit MLX) |
+| Model size on disk | 880 MB (4-bit MLX) |
 | Prefill / decode tokens/sec | ~137 / 44.4 |
 | Peak memory | 1.05 GB (831 MB active) |
 

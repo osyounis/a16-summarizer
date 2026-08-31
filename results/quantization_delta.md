@@ -48,18 +48,18 @@ outputs.
 
 | | fp16 merged | 4-bit MLX |
 |---|------------:|----------:|
-| on disk | ~3.1 GB | 847 MB |
+| on disk | ~3.1 GB | 880 MB |
 | bits / weight | 16 | 4.501 |
 
 `--q-bits 4 --q-group-size 64`. The effective 4.5 bits/weight comes from embeddings and
-norms staying at higher precision under the group-quantization default. Roughly 3.7x
+norms staying at higher precision under the group-quantization default. Roughly 3.5x
 smaller.
 
 ## Decision
 
 Accepted at 4-bit. The cost is a mild, expected drop of about 1.5 to 2 ROUGE points
 (biggest on ROUGE-2, −6.3% relative) with clean diagnostics and coherent, terse output.
-There is no quality cliff. At ~847 MB it fits the iPhone 14 Pro (A16, 6 GB) with headroom,
+There is no quality cliff. At ~880 MB it fits the iPhone 14 Pro (A16, 6 GB) with headroom,
 which is the whole point of the project: a task-scoped summarizer running below Apple's
 A17 Pro / 8 GB on-device line. I also looked at 8-bit (~1.6 GB, near-lossless) and mixed
 4/6-bit recipes, and passed on both in favor of the smaller footprint.
